@@ -25,7 +25,7 @@ def nova_refeicao():
 
 @app.route("/refeicao", methods=["GET"])
 def refeicao():
-    return "REFEICAO"
+    return refeicao
 
 
 if __name__ == "__main__":
