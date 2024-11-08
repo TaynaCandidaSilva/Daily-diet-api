@@ -15,8 +15,6 @@ def nova_refeicao():
     refeicao = request.json
     nova_refeicao = Refeicao(**refeicao)
 
-    print(refeicao)
-
     db.session.add(nova_refeicao)
     db.session.commit()
 
@@ -25,7 +23,10 @@ def nova_refeicao():
 
 @app.route("/refeicao", methods=["GET"])
 def refeicao():
-    return refeicao
+    item = Refeicao.query.all()
+    item_list = [refeicao.to_dict() for refeicao in item]
+
+    return jsonify(item_list)
 
 
 if __name__ == "__main__":
