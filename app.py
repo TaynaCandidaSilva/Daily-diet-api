@@ -41,6 +41,7 @@ def editar_refeicao(id):
 
 @app.route("/refeicao/<id>", methods=["DELETE"])
 def deletar_refeicao(id):
+
     refeicao = Refeicao.query.filter_by(id=id).first()
 
     if refeicao:
@@ -52,12 +53,14 @@ def deletar_refeicao(id):
     return jsonify({"message": "Refeicao nao encontrada"}), 404
 
 
-@app.route("/refeicao", methods=["GET"])
-def todas_refeicoes():
-    item = Refeicao.query.all()
-    item_list = [refeicao.to_dict() for refeicao in item]
+@app.route("/refeicao/<nome>", methods=["GET"])
+def todas_refeicoes_usuario(nome):
+    nomes = Refeicao.query.filter_by(nome=nome).all()
+    list = []
+    for nome in nomes:
+        list.append(nome.to_dict())
 
-    return jsonify(item_list)
+    return jsonify({"refeicoes": list})
 
 
 if __name__ == "__main__":
