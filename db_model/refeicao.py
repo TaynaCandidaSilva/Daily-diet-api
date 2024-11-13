@@ -5,7 +5,7 @@ class Refeicao(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(50))
     descricao = db.Column(db.String(200))
-    data_hora = db.Column(db.String(10))
+    data_hora = db.Column(db.String(20))
     dentro_dieta = db.Column(db.Boolean)
 
     def to_dict(self):

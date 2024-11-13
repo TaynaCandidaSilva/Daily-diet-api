@@ -21,6 +21,14 @@ def nova_refeicao():
     return jsonify({"message": "Refeição criada com sucesso"})
 
 
+@app.route("/refeicao/<int:id>", methods=["GET"])
+def refeicao_id(id):
+    refeicao = Refeicao.query.filter_by(id=id).first()
+    if refeicao:
+        return jsonify(refeicao.to_dict()), 200
+    return jsonify({"message": "Refeicao nao encontrada"}), 404
+
+
 @app.route("/refeicao/<id>", methods={"PUT"})
 def editar_refeicao(id):
     refeicao = Refeicao.query.filter_by(id=id).first()
@@ -34,7 +42,7 @@ def editar_refeicao(id):
         db.session.add(refeicao)
         db.session.commit()
 
-        return jsonify({"message": "Refeição editada com sucesso"}), 200
+        return jsonify({"message": f"Refeição {id} editada com sucesso"}), 200
 
     return jsonify({"message": "Refeição nao encontrada"}), 404
 
@@ -48,19 +56,21 @@ def deletar_refeicao(id):
         db.session.delete(refeicao)
         db.session.commit()
 
-        return jsonify({"message": "Refeicao deletada com sucesso"}), 200
+        return jsonify({"message": f"Refeicao {id} deletada com sucesso"}), 200
 
     return jsonify({"message": "Refeicao nao encontrada"}), 404
 
 
 @app.route("/refeicao/<nome>", methods=["GET"])
 def todas_refeicoes_usuario(nome):
-    nomes = Refeicao.query.filter_by(nome=nome).all()
-    list = []
-    for nome in nomes:
-        list.append(nome.to_dict())
+    refeicoes = Refeicao.query.filter_by(nome=nome).all()
+    lista_refeicoes = []
+    for refeicao in refeicoes:
+        lista_refeicoes.append(refeicao.to_dict())
 
-    return jsonify({"refeicoes": list})
+        return jsonify({f"refeicoes de {nome}": lista_refeicoes}), 200
+
+    return jsonify({"message": f"Nenhuma refeicao encontrada para {nome}"}), 404
 
 
 if __name__ == "__main__":
