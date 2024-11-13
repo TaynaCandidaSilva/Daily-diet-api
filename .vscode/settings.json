@@ -1,5 +1,6 @@
 {
     "files.exclude": {
         "**/desafio-dieta": true,
+        "**/__pycache__": true
     }
 }

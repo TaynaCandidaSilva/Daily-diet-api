@@ -11,7 +11,7 @@ db.init_app(app)
 
 
 @app.route("/refeicao", methods=["POST"])
-def nova_refeicao():
+def refeicao_nova():
     refeicao = request.json
     nova_refeicao = Refeicao(**refeicao)
 
@@ -30,9 +30,8 @@ def refeicao_id(id):
 
 
 @app.route("/refeicao/<id>", methods={"PUT"})
-def editar_refeicao(id):
+def refeicao_editar(id):
     refeicao = Refeicao.query.filter_by(id=id).first()
-
     if refeicao:
         refeicao.nome = request.json.get("nome", refeicao.nome)
         refeicao.descricao = request.json.get("descricao", refeicao.descricao)
@@ -44,11 +43,12 @@ def editar_refeicao(id):
 
         return jsonify({"message": f"Refeição {id} editada com sucesso"}), 200
 
-    return jsonify({"message": "Refeição nao encontrada"}), 404
+    elif not refeicao or id != refeicao.id:
+        return jsonify({"message": "Nao foi possivel editar a refeicao"}), 404
 
 
 @app.route("/refeicao/<id>", methods=["DELETE"])
-def deletar_refeicao(id):
+def refeicao_excluir(id):
 
     refeicao = Refeicao.query.filter_by(id=id).first()
 
@@ -62,7 +62,7 @@ def deletar_refeicao(id):
 
 
 @app.route("/refeicao/<nome>", methods=["GET"])
-def todas_refeicoes_usuario(nome):
+def refeicoes_nome_usuario(nome):
     refeicoes = Refeicao.query.filter_by(nome=nome).all()
     lista_refeicoes = []
     for refeicao in refeicoes:
